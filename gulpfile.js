@@ -18,7 +18,8 @@ var output = {
   'css': './dist/assets/css'
 };
 var vendorFiles = [
-  'node_modules/mithril/mithril.js'
+  'node_modules/mithril/mithril.js',
+  'node_modules/underscore/underscore.js'
 ];
 
 
@@ -60,7 +61,7 @@ gulp.task("vendor", function() {
 });
 
 gulp.task('sass', function () {
-  return gulp.src('./sass/*.scss')
+  return gulp.src('./sass/[^_]*.scss')
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest(output.css));
 });

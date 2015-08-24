@@ -1,3 +1,11 @@
 {
+  "globals": {
+    "document": true,
+    "window": true,
+    "console": false,
+    "m": false,
+    "_": false
+  },
+  "undef": true,
   "esnext": true
 }
