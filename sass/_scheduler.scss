@@ -1,0 +1,35 @@
+
+.scheduler-grid {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+
+  .scheduler-row {
+    display: table-row;
+
+    .row-info, .row-grid {
+      display: table-cell;
+      border-bottom: 1px solid #f0f0f0;
+      min-height: 40px;
+    }
+
+    .row-info {
+      width: 180px;
+      vertical-align: middle;
+      padding-left: 10px;
+    }
+
+    .week-row {
+      display: table;
+      empty-cells: show;
+      table-layout: fixed;
+      width: 100%;
+      min-height: 40px;
+    }
+    .day-cell {
+      display: table-cell;
+      width: 14.28%;
+      border-left: 1px solid #f0f0f0;
+    }
+  }
+}

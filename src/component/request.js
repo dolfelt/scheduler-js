@@ -1,18 +1,34 @@
 export default function (options) {
-  options = Object.assign({
+  var settings = Object.assign({
     method: "GET",
-    url: "",
+    background: true,
+    initialValue: [],
     config: function(xhr) {
       xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.setRequestHeader("W-Token", "f238d95cecd6217e2f15a6b125295ae002a5f2ef");
+      xhr.setRequestHeader("W-Token", window.localStorage.getItem("token"));
+      xhr.timeout = 4000;
+      xhr.ontimeout = function() {
+        complete();
+      };
     }
   }, options);
 
+  var data = m.prop(settings.initialValue);
+  var completed = m.prop(false);
+  var complete = function(response) {
+    data(response);
+    completed(true);
+  };
 
-  if (options.url.search(/^http/i) !== 0) {
-    options.url = 'http://api.wheniwork.dev/2' + options.url;
+  if (settings.url.search(/^http/i) !== 0) {
+    settings.url = window.localStorage.getItem("endpoint") + settings.url;
   }
-  console.log(options);
 
-  return m.request(options);
+  var req = m.request(settings).then(complete, complete);
+
+  return {
+    data: data,
+    request: req,
+    ready: completed
+  };
 }

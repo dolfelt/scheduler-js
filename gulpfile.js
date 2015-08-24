@@ -1,3 +1,4 @@
+// jshint ignore: start
 var gulp = require("gulp");
 var watchify = require('watchify');
 var browserify = require('browserify');

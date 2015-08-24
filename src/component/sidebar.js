@@ -1,6 +1,11 @@
 export default function() {
   var links = [
     {
+      icon: "fa-sign-in",
+      title: "Login",
+      url: "/login"
+    },
+    {
       icon: "fa-dashboard",
       title: "Dashboard",
       url: "/"
@@ -12,12 +17,12 @@ export default function() {
     }
   ];
 
-  return m("div#main-sidebar", [
+  return m("#main-sidebar", [
     m("ul", {class: "navigation"},
       links.map(function(link) {
         return m("li", [
           m("a", {href: link.url, config: m.route}, [
-            m("i", {class: "fa " + link.icon}), " ", link.title
+            m("i.menu-icon", {class: "fa " + link.icon}), " ", link.title
           ])
         ]);
       })

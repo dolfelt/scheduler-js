@@ -2,16 +2,23 @@ import AppRequest from "component/request";
 import ModelViewMap from "model/viewmap";
 import ModelPosition from "model/position";
 
-var Shift = function(data) {
-	this.id = m.prop(data.id);
+import moment from "moment/moment";
 
-	this.start_time = m.prop(data.start_time);
-	this.end_time = m.prop(data.end_time);
+var Shift = function(data) {
+	this.id = data.id;
+
+	this.startTime = m.prop(data.start_time);
+	this.endTime = m.prop(data.end_time);
 	this.color = m.prop(data.color);
-	this.position_id = m.prop(data.position_id);
+	this.userId = m.prop(data.user_id);
+	this.positionId = m.prop(data.position_id);
+
+	this.startTimeDate = function() {
+		return moment(this.startTime());
+	};
 
 	this.position = function() {
-		return new ModelPosition({id: this.position_id()});
+		return new ModelPosition({id: this.positionId()});
 	};
 };
 
