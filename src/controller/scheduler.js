@@ -9,75 +9,77 @@ import SchedulerRow from "component/scheduler/row";
 import moment from "moment/moment";
 
 var SchedulerData = function() {
-  this.start = m.prop(moment().startOf('week'));
-  this.end = m.prop(moment().endOf('week'));
-  this.locationId = m.prop(0);
+    this.start = m.prop(moment().startOf('week'));
+    this.end = m.prop(moment().endOf('week'));
+    this.locationId = m.prop(0);
 };
 
 var Scheduler = {
-  controller: function() {
+    controller: function() {
 
-    var data = new SchedulerData(),
-      users = Scheduler.users(),
-      locations = Scheduler.locations(),
-      shifts = Scheduler.getShifts(data.start(), data.end());
+        var data = new SchedulerData(),
+            users = Scheduler.users(),
+            locations = Scheduler.locations(),
+            shifts = Scheduler.getShifts(data.start(), data.end());
 
-    m.sync([
-      users.request,
-      locations.request,
-      shifts.request
-    ]).then(m.redraw);
+        m.sync([
+            users.request,
+            locations.request,
+            shifts.request
+        ]).then(m.redraw);
 
-    return {
-      title: "Scheduler",
-      users: users,
-      locations: locations,
-      shifts: shifts,
-      data: data
-    };
-  },
-  locations: function() {
-    return ModelLocation.list();
-  },
-  users: function() {
-    return ModelUser.list();
-  },
-  getShifts: function(start, end) {
-    return AppRequest({
-      url: "/shifts",
-      type: ModelShift,
-      data: {
-        start: start.toISOString(),
-        end: end.toISOString(),
-        unpublished: true,
-        include_allopen: true,
-        include_objects: false
-      },
-      unwrapSuccess: function(data) {
-        return data.shifts;
-      }
-    });
-  },
-  view: function(ctrl) {
-    var content;
-    if (ctrl.shifts.ready()) {
-
-      var shiftsByUser = _(ctrl.shifts.data()).groupBy(function(s) { return s.userId(); });
-
-      var rows = ctrl.users.data().map(function(user) {
-        return m.component(SchedulerRow, {
-          user: user,
-          shifts: shiftsByUser[user.id],
-          start: moment(ctrl.data.start()),
-          end: moment(ctrl.data.end())
+        return {
+            title: "Scheduler",
+            users: users,
+            locations: locations,
+            shifts: shifts,
+            data: data
+        };
+    },
+    locations: function() {
+        return ModelLocation.list();
+    },
+    users: function() {
+        return ModelUser.list();
+    },
+    getShifts: function(start, end) {
+        return AppRequest({
+            url: "/shifts",
+            type: ModelShift,
+            data: {
+                start: start.toISOString(),
+                end: end.toISOString(),
+                unpublished: true,
+                include_allopen: true,
+                include_objects: false
+            },
+            unwrapSuccess: function(data) {
+                return data.shifts;
+            }
         });
-      });
-      content = m(".scheduler-grid", rows);
-    } else {
-      content = m("div", "Loading Shifts...");
+    },
+    view: function(ctrl) {
+        var content;
+        if (ctrl.shifts.ready()) {
+
+            var shiftsByUser = _(ctrl.shifts.data()).groupBy(function(s) {
+                return s.userId();
+            });
+
+            var rows = ctrl.users.data().map(function(user) {
+                return m.component(SchedulerRow, {
+                    user: user,
+                    shifts: shiftsByUser[user.id],
+                    start: moment(ctrl.data.start()),
+                    end: moment(ctrl.data.end())
+                });
+            });
+            content = m(".scheduler-grid", rows);
+        } else {
+            content = m("div", "Loading Shifts...");
+        }
+        return Layout(m("div", content));
     }
-    return Layout(m("div", content));
-  }
 };
 
 export default Scheduler;
