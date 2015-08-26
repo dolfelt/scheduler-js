@@ -10,7 +10,7 @@
     .row-info, .row-grid {
       display: table-cell;
       border-bottom: 1px solid #f0f0f0;
-      min-height: 40px;
+      min-height: 46px;
     }
 
     .row-info {
@@ -30,6 +30,27 @@
       display: table-cell;
       width: 14.28%;
       border-left: 1px solid #f0f0f0;
+
+      .shift-holder {
+        padding: 5px 5px 0;
+      }
     }
+
+    .shift-item {
+      display: block;
+      padding: 5px;
+      margin-bottom: 5px;
+      p {
+        margin: 0;
+        color: white;
+        font-size: 14px;
+        line-height: 26px;
+
+        strong {
+          font-weight: 600;
+        }
+      }
+    }
+
   }
 }

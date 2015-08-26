@@ -17,9 +17,10 @@ var SchedulerData = function() {
 var Scheduler = {
   controller: function() {
 
-    var users = Scheduler.users(),
+    var data = new SchedulerData(),
+      users = Scheduler.users(),
       locations = Scheduler.locations(),
-      shifts = Scheduler.getShifts();
+      shifts = Scheduler.getShifts(data.start(), data.end());
 
     m.sync([
       users.request,
@@ -32,7 +33,7 @@ var Scheduler = {
       users: users,
       locations: locations,
       shifts: shifts,
-      data: new SchedulerData()
+      data: data
     };
   },
   locations: function() {
@@ -41,13 +42,13 @@ var Scheduler = {
   users: function() {
     return ModelUser.list();
   },
-  getShifts: function() {
+  getShifts: function(start, end) {
     return AppRequest({
       url: "/shifts",
       type: ModelShift,
       data: {
-        start: moment().toISOString(),
-        end: moment().add(7, 'd').toISOString(),
+        start: start.toISOString(),
+        end: end.toISOString(),
         unpublished: true,
         include_allopen: true,
         include_objects: false

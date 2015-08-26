@@ -20,7 +20,7 @@ var Row = {
     if (mode == "week") {
       var cells = [];
       while(start.isBefore(end)) {
-        cells.push(m(".day-cell", this.render(start, shifts)));
+        cells.push(m(".day-cell", m(".shift-holder", this.render(start, shifts)) ));
         start.add(1, 'd');
       }
       return m(".week-row", cells);

@@ -14,10 +14,17 @@ var ShiftItem = {
     var shift = ctrl.shift(),
       start = this.parseDate(shift.startTime()),
       end = this.parseDate(shift.endTime());
-    return m("div.shift-data", {key: shift.id, onclick: this.details.bind(this, shift)}, [
-      m("strong", {style: 'color: #'+shift.color()}, [
-        start.format("MMM Do, YYYY h:mma"), " - ", end.format("hh:mma")]),
-      m("span.position-tag", shift.position().id)
+    return m("div.shift-item", {
+        key: shift.id,
+        onclick: this.details.bind(this, shift),
+        style: 'background-color: #'+shift.color()
+      }, [
+      m("p", [
+        m("strong", [
+          start.format("h:mma"), " - ", end.format("h:mma")
+        ].join('').replace(/:00/g, '')),
+        m("span.position-tag", shift.position().id)
+      ])
     ]);
   }
 };
