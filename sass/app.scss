@@ -20,5 +20,8 @@
 @import "../node_modules/bootstrap/scss/grid";
 
 @import "layout/base";
+@import "layout/sections";
+@import "layout/forms";
 
 @import "pages/scheduler";
+@import "pages/login";

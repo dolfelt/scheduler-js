@@ -7,7 +7,9 @@ var LoginController = {
             storage: storage,
             data: {
                 token: m.prop(LoginController.getToken(storage)),
-                endpoint: m.prop(LoginController.getEndpoint(storage))
+                endpoint: m.prop(LoginController.getEndpoint(storage)),
+                email: m.prop(""),
+                password: m.prop("")
             }
         };
     },
@@ -20,10 +22,26 @@ var LoginController = {
     login: function(data, e) {
         e.preventDefault();
 
+        // Save endpoint for future use.
         window.localStorage.setItem("endpoint", data.endpoint());
-        window.localStorage.setItem("token", data.token());
 
-        m.route('/scheduler');
+        this.tryLogin(data.email(), data.password());
+    },
+    tryLogin: function(email, password) {
+        m.request({
+            method: "POST",
+            url: this.getEndpoint(window.localStorage) + "/login",
+            data: {
+                "key": "", // TODO: Store developer key somewhere.
+                "email": email,
+                "password": password
+            }
+        }).then(function(data) {
+            window.localStorage.setItem("token", data.login.token);
+            m.route('/scheduler');
+        }, function(data) {
+            window.alert(data.error || "Error logging in.");
+        });
     },
     track: function(data, e) {
         if (!(e.target.name in data)) {
@@ -32,18 +50,27 @@ var LoginController = {
         data[e.target.name](e.target.value);
     },
     view: function(ctrl) {
-        return Layout(m("div", [
-            m("form", {onsubmit: this.login.bind(this, ctrl.data), onchange: this.track.bind(this, ctrl.data)}, [
-                m(".form-item", [
-                    m("label", "When I Work Token"),
-                    m("input[name=token]", {value: ctrl.data.token()})
-                ]),
-                m(".form-item", [
-                    m("label", "API URL (including version)"),
-                    m("input[name=endpoint]", {value: ctrl.data.endpoint()})
-                ]),
-                m("button", "Login")
-            ])
+        return Layout(m(".section.login-section", [
+            m(".section--head", [
+                "Let's Login"
+            ]),
+            m(".section--body",
+                m("form", {onsubmit: this.login.bind(this, ctrl.data), onchange: this.track.bind(this, ctrl.data)}, [
+                    m(".form-group", [
+                        m("label", "Endpoint"),
+                        m("input.form-control[name=endpoint]", {value: ctrl.data.endpoint()})
+                    ]),
+                    m(".form-group", [
+                        m("label", "Email"),
+                        m("input.form-control[name=email]")
+                    ]),
+                    m(".form-group", [
+                        m("label", "Password"),
+                        m("input.form-control[name=password]", {type: "password"})
+                    ]),
+                    m("button", "Login")
+                ])
+            )
         ]));
     }
 };
