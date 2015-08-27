@@ -10,7 +10,8 @@ var Row = {
     view: function(ctrl, obj) {
         return m(".scheduler-row", {class: "type-" + ctrl.type}, [
                 m(".row-info", [
-                    obj.user.firstName()
+                    m("img.user-avatar", {src: obj.user.avatar(40)}),
+                    obj.user.fullName()
                 ]),
                 m(".row-grid", this.grid(ctrl.mode, obj.start, obj.end, obj.shifts))
             ]

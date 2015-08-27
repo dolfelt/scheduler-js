@@ -4,10 +4,18 @@ var User = function(data) {
     this.id = data.id;
 
     this.firstName = m.prop(data.first_name);
-    this.lastName = m.prop(data.first_name);
+    this.lastName = m.prop(data.last_name);
 
-    this.position_ids = m.prop(data.positions);
-    this.location_ids = m.prop(data.locations);
+    this.fullName = function() {
+        return [this.firstName(), this.lastName()].join(' ');
+    };
+
+    this.avatar = function(size) {
+        return data.avatar.url.replace('%s', size || 40);
+    };
+
+    this.positionIds = m.prop(data.positions);
+    this.locationIds = m.prop(data.locations);
 
     this.updatedAt = m.prop(data.updated_at);
 };
