@@ -11,6 +11,7 @@ var assign = require('lodash.assign');
 
 var concat = require("gulp-concat");
 var sass = require("gulp-sass");
+var autoprefixer = require('gulp-autoprefixer');
 var connect = require("gulp-connect");
 
 // Configuration
@@ -64,6 +65,11 @@ gulp.task("vendor", function() {
 gulp.task('sass', function () {
   return gulp.src('./sass/[^_]*.scss')
     .pipe(sass().on('error', sass.logError))
+    .pipe(autoprefixer({
+        browsers: ['last 2 versions', 'ie >= 9'], // More info at https://github.com/ai/browserslist
+        cascade: false
+    }))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(output.css));
 });
 
