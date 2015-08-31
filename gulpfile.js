@@ -3,6 +3,7 @@ var gulp = require("gulp");
 var watchify = require('watchify');
 var browserify = require('browserify');
 var babelify = require("babelify");
+var envify = require("envify/custom");
 var sourcemaps = require("gulp-sourcemaps");
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
@@ -35,7 +36,7 @@ var opts = assign({}, watchify.args, customOpts);
 var b = watchify(browserify(opts));
 
 // add transformations here
-b.transform(babelify);
+b.transform(babelify).transform(envify(require('./config.js')));
 
 gulp.task("bundle", bundle);
 b.on('log', gutil.log); // output build logs to terminal
