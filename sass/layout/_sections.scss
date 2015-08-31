@@ -1,0 +1,28 @@
+.section {
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,.15);
+  border-radius: 4px;
+
+  .section--head {
+    font-size: 12px;
+    padding: 15px;
+    font-weight: 600;
+    border-bottom: solid 2px #e4e4e4;
+    border-top: solid 1px #eee;
+    text-transform: uppercase;
+
+    &:first-child {
+      border-top: none;
+    }
+  }
+
+  .section--body {
+    margin: 0;
+    padding: 20px;
+  }
+
+  .section--footer {
+    padding: 10px 20px;
+    border-top: 2px solid #e4e4e4;
+  }
+}

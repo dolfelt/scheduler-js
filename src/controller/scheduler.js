@@ -1,10 +1,10 @@
-import Layout from "component/layout";
 import ModelShift from "model/shift";
 import ModelLocation from "model/location";
 import ModelUser from "model/user";
 
 import AppRequest from "component/request";
-import SchedulerRow from "component/scheduler/row";
+
+import SchedulerView from "view/scheduler";
 
 import moment from "moment/moment";
 
@@ -17,69 +17,53 @@ var SchedulerData = function() {
 var Scheduler = {
     controller: function() {
 
-        var data = new SchedulerData(),
-            users = Scheduler.users(),
-            locations = Scheduler.locations(),
-            shifts = Scheduler.getShifts(data.start(), data.end());
+        this.title = m.prop("Scheduler");
+        this.data = new SchedulerData();
 
-        m.sync([
-            users.request,
-            locations.request,
-            shifts.request
-        ]).then(m.redraw);
+        this.loadData = function() {
 
-        return {
-            title: "Scheduler",
-            users: users,
-            locations: locations,
-            shifts: shifts,
-            data: data
+            m.startComputation();
+            this.users = this.getUsers();
+            this.locations = this.getLocations();
+            this.shifts = this.getShifts(this.data.start(), this.data.end());
+
+            m.sync([
+                this.users.request,
+                this.locations.request,
+                this.shifts.request
+            ]).then(m.endComputation);
         };
-    },
-    locations: function() {
-        return ModelLocation.list();
-    },
-    users: function() {
-        return ModelUser.list();
-    },
-    getShifts: function(start, end) {
-        return AppRequest({
-            url: "/shifts",
-            type: ModelShift,
-            data: {
-                start: start.toISOString(),
-                end: end.toISOString(),
-                unpublished: true,
-                include_allopen: true,
-                include_objects: false
-            },
-            unwrapSuccess: function(data) {
-                return data.shifts;
-            }
-        });
-    },
-    view: function(ctrl) {
-        var content;
-        if (ctrl.shifts.ready()) {
 
-            var shiftsByUser = _(ctrl.shifts.data()).groupBy(function(s) {
-                return s.userId();
-            });
 
-            var rows = ctrl.users.data().map(function(user) {
-                return m.component(SchedulerRow, {
-                    user: user,
-                    shifts: shiftsByUser[user.id],
-                    start: moment(ctrl.data.start()),
-                    end: moment(ctrl.data.end())
-                });
+        this.getUsers = function() {
+            return ModelUser.list();
+        };
+
+        this.getLocations = function() {
+            return ModelLocation.list();
+        };
+
+        this.getShifts = function(start, end) {
+            return AppRequest({
+                url: "/shifts",
+                type: ModelShift,
+                data: {
+                    start: start.toISOString(),
+                    end: end.toISOString(),
+                    unpublished: true,
+                    include_allopen: true,
+                    include_objects: false
+                },
+                unwrapSuccess: function(data) {
+                    return data.shifts;
+                }
             });
-            content = m(".scheduler-grid", rows);
-        } else {
-            content = m("div", "Loading Shifts...");
-        }
-        return Layout(m("div", content));
-    }
+        };
+
+        this.loadData();
+
+    },
+    view: SchedulerView
 };
 
 export default Scheduler;
