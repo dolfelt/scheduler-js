@@ -6,23 +6,25 @@ export default function() {
             url: "/login"
         },
         {
-            icon: "fa-dashboard",
-            title: "Dashboard",
-            url: "/"
-        },
-        {
             icon: "fa-calendar",
             title: "Scheduler",
             url: "/scheduler"
+        },
+        {
+            icon: "fa-users",
+            title: "Employees",
+            url: "/employees"
         }
     ];
 
-    return m("#main-sidebar", [
-        m("ul", {class: "navigation"},
+    return m(".sidebar", [
+        m("ul.nav",
             links.map(function(link) {
-                return m("li", [
-                    m("a", {href: link.url, config: m.route}, [
-                        m("i.menu-icon", {class: "fa " + link.icon}), " ", link.title
+                return m("li.nav__item", [
+                    m("a.nav__link", {href: link.url, config: m.route}, [
+                        m("i.nav__icon", {class: "fa " + link.icon}), " ", [
+                            m("span", link.title)
+                        ]
                     ])
                 ]);
             })

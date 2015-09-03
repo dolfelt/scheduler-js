@@ -30,16 +30,26 @@ var viewLoading = function(ctrl) {
 var viewAccounts = function(ctrl, args) {
     return m("ul.account-list",
         ctrl.accounts().map(function(acct) {
-            return m("li", {key: acct.id}, m("a", {href: "#", onclick: ctrl.selectAccount.bind(ctrl, getUser(acct.id, ctrl.users()).id)}, [
-                m("img", {src: acct.logo(), width:40, height:40}),
-                acct.company() || acct.subdomain()
-            ]));
+            var user = getUser(acct.id, ctrl.users());
+            return m("li.account-list__item", {key: acct.id},
+                m("a.account-list__link", {href: "#", onclick: ctrl.selectAccount.bind(ctrl, user.id)}, [
+                    m("img", {src: acct.logo()}),
+                    acct.company() || acct.subdomain(),
+                    m("span", user.roleName())
+                ])
+            );
         })
     );
 };
 
+var loginLayout = function(body) {
+    return Layout(m(".container", [
+        m(".col-md-6 .col-md-offset-3", body)
+    ]));
+};
+
 export default function(ctrl) {
-    return Layout(m(".section.login-section", [
+    return loginLayout(m(".section.login-section", [
         m(".section--head", [
             "Let's Login"
         ]),

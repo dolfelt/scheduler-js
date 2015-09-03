@@ -31,7 +31,8 @@ ul {
     }
 }
 
-#main-sidebar {
+// Sidebar styles
+.sidebar {
     height: 100%;
     margin: 0;
     padding: 60px 0 0;
@@ -42,41 +43,64 @@ ul {
     background: #2a2d33;
     color: #8a919f;
 
-    ul.navigation {
-        padding: 10px 0 0;
-        li {
-            position: relative;
-            a {
-                color: #8a919f;
-                display: block;
-                font-size: 14px;
-                line-height: 20px;
-                padding: 11px 14px;
-                text-decoration: none;
+    &--small {
+        width: 60px;
 
-                i.menu-icon {
-                    margin-right: 5px;
-                }
+        .nav {
+            padding-top: 0;
+        }
+        .nav__item {
+            border-bottom: 1px solid #363941;
+        }
+        .nav__link {
+            padding: 0;
+            text-align: center;
 
-                &:hover {
-                    color: white;
-                    &:after {
-                        display: block;
-                    }
-                }
-                &:after {
-                    content: "";
-                    top: 0;
-                    bottom: 0;
-                    width: 4px;
-                    position: absolute;
-                    right: auto;
-                    background: #54c89b;
-                    display: none;
-                    left: 0;
-                }
+            span {
+                display: none;
             }
         }
+        .nav__icon {
+            font-size: 24px;
+            margin: 0;
+            line-height: 60px;
+        }
+    }
+}
+// Sidebar navigation
+.nav {
+    padding: 10px 0 0;
+    &__item {
+        position: relative;
+    }
+    &__link {
+        color: #8a919f;
+        display: block;
+        font-size: 14px;
+        line-height: 20px;
+        padding: 11px 14px;
+        text-decoration: none !important;
+
+        &:hover {
+            color: white;
+            &:after {
+                display: block;
+            }
+        }
+        &:after {
+            content: "";
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            position: absolute;
+            right: auto;
+            background: #54c89b;
+            display: none;
+            left: 0;
+        }
+    }
+    &__icon {
+        margin-right: 5px;
     }
 }
 
