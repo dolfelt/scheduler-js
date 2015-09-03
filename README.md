@@ -11,6 +11,11 @@ npm install -g gulp
 npm install
 ```
 
+Rename `config.example.js` to `config.js` and change any values as necessary.
+```bash
+cp config.example.js config.js
+```
+
 Then run:
 
 ```bash

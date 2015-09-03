@@ -8,10 +8,6 @@ var getUser = function(acct_id, users) {
 var viewLogin = function(ctrl) {
     return m("form", {onsubmit: ctrl.login.bind(ctrl), onchange: ctrl.trackForm.bind(ctrl)}, [
         m(".form-group", [
-            m("label", "Endpoint"),
-            m("input.form-control[name=endpoint]", {value: ctrl.form.endpoint()})
-        ]),
-        m(".form-group", [
             m("label", "Email"),
             m("input.form-control[name=email]", {value: ctrl.form.email()})
         ]),

@@ -5,7 +5,6 @@ const STORAGE_KEY = "scheduler-js";
 var Storage = {
     keys: ["auth", "config"],
     auth: {
-        endpoint: m.prop("http://api.wheniwork.dev/2"),
         token: m.prop(""),
         userId: m.prop("")
     },

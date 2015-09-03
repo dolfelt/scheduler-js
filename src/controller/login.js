@@ -12,7 +12,6 @@ export default {
 
         this.accounts = m.prop([]);
         this.users = m.prop([]);
-        this.endpoint = m.prop("https://api.wheniwork.com/2");
         this.token = m.prop();
 
         this.loading = m.prop(true);
@@ -21,7 +20,6 @@ export default {
             m.startComputation();
 
             Storage.load().then(function(auth) {
-                this.endpoint(Storage.auth.endpoint());
                 this.token(Storage.auth.token());
 
                 if (this.token()) {
@@ -38,23 +36,19 @@ export default {
         this.form = {
             email: m.prop(process.env.DEFAULT_USER),
             password: m.prop(process.env.DEFAULT_PASS),
-            endpoint: this.endpoint
         };
 
         this.login = function(e) {
             e.preventDefault();
 
-            // Save endpoint for future use.
-            LocalForage.setItem("endpoint", this.form.endpoint()).then(function() {
-                this.tryLogin(this.form.email(), this.form.password());
-            }.bind(this));
+            this.tryLogin(this.form.email(), this.form.password());
         };
 
         this.tryLogin = function(email, password) {
             m.startComputation();
             m.request({
                 method: "POST",
-                url: this.endpoint() + "/login",
+                url: process.env.API_ENDPOINT + "/login",
                 data: {
                     "key": process.env.DEV_KEY,
                     "email": email,

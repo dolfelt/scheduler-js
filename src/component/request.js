@@ -29,7 +29,7 @@ var Request = function(options) {
     };
 
     if (settings.url.search(/^http/i) !== 0) {
-        settings.url = window.localStorage.getItem("endpoint") + settings.url;
+        settings.url = process.env.API_ENDPOINT + settings.url;
     }
 
     var req = m.request(settings).then(complete, complete);

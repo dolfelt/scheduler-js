@@ -4,7 +4,9 @@
     "window": true,
     "console": false,
     "m": false,
-    "_": false
+    "_": false,
+    "module": true,
+    "process": false
   },
   "undef": true,
   "esnext": true
