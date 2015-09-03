@@ -2,6 +2,8 @@ import ModelShift from "model/shift";
 import ModelLocation from "model/location";
 import ModelUser from "model/user";
 
+import Storage from "model/storage";
+
 import AppRequest from "component/request";
 
 import SchedulerView from "view/scheduler";
@@ -23,15 +25,18 @@ var Scheduler = {
         this.loadData = function() {
 
             m.startComputation();
-            this.users = this.getUsers();
-            this.locations = this.getLocations();
-            this.shifts = this.getShifts(this.data.start(), this.data.end());
 
-            m.sync([
-                this.users.request,
-                this.locations.request,
-                this.shifts.request
-            ]).then(m.endComputation);
+            Storage.load().then(function() {
+                this.users = this.getUsers();
+                this.locations = this.getLocations();
+                this.shifts = this.getShifts(this.data.start(), this.data.end());
+
+                m.sync([
+                    this.users.request,
+                    this.locations.request,
+                    this.shifts.request
+                ]).then(m.endComputation);
+            }.bind(this));
         };
 
 

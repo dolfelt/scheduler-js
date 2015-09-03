@@ -1,4 +1,5 @@
 import AppRequest from "component/request";
+import ModelViewMap from "model/viewmap";
 
 var User = function(data) {
     this.id = data.id;
@@ -6,6 +7,15 @@ var User = function(data) {
     this.accountId = m.prop(data.account_id);
     this.firstName = m.prop(data.first_name);
     this.lastName = m.prop(data.last_name);
+    this.role = m.prop(data.role);
+    this.roleName = function() {
+        return {
+            1: "Admin",
+            2: "Manager",
+            3: "Employee",
+            5: "Supervisor"
+        }[this.role()] || "Unknown";
+    }
 
     this.fullName = function() {
         return [this.firstName(), this.lastName()].join(' ');
@@ -38,5 +48,9 @@ User.list = function(location_id) {
         }
     });
 };
+
+User.viewmap = ModelViewMap({
+
+});
 
 export default User;
